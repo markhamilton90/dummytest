@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style media="screen">
+  body {
+margin: 0;
+padding: 0;
+}
+
+* {
+box-sizing: border-box;
+}
+
+.outer {
+width: 200px;
+height: 300px;
+background: #eee;
+overflow: hidden;
+overflow-y: auto;
+}
+
+.inner {
+width: 100%;
+height: 100%;
+}
+
+.content {
+height: 50px;
+width: 100%;
+background: #ddd;
+border-bottom: 1px solid #333;
+&:hover {
+  cursor: pointer;
+}
+}
+
+.selected {
+height: 100px;
+background: #333;
+color: white;
+}
+
+button {
+display: inline-block;
+width: 50px;
+height: 30px;
+background: #333;
+color: white;
+border: 1px #333;
+margin-top: 30px;
+margin-left: 10px;
+}
+  </style>
+</head>
+<body>
+  <div class="outer">
+    <div class="inner">
+      <div class="content first">1. Naperville</div>
+      <div class="content">2. Plainfield</div>
+      <div class="content selected">3. Joliet</div>
+      <div class="content">4. St. Charles</div>
+      <div class="content">5. Romeoville</div>
+      <div class="content">6. Glen Ellyn</div>
+      <div class="content">7. Westchester</div>
+      <div class="content">8. Zoomustar</div>
+      <div class="content">9. Hildegard</div>
+      <div class="content">10. Romeoville</div>
+      <div class="content">11. Western Springs</div>
+      <div class="content">12. LaGrange</div>
+      <div class="content">13. Downtown</div>
+      <div class="content">14. Suburbia</div>
+    </div>
+  </div>
+
+  <button id="up">UP</button>
+  <button id="down">DOWN</button>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+  $(document).ready( function() {
+    var outer = $('.outer'),
+    inner = $('.inner'),
+
+    total = $('.content').length,
+    visible = 5,
+    invisible = total - visible,
+
+    positionTop = -50 * invisible,
+    positionBottom = 250 + (50 * invisible),
+    offsetBottom = 50,
+
+    //buttons
+    up = $('#up'),
+    down = $('#down');
+
+outer.scrollTop(1);
+
+outer.on('scroll', function() {
+  changeSelected();
+
+  if ($('.content').first().position().top <= -50) {
+    inner.append($('.content').first());
+    outer.prop('scrollTop', 0);
+  }
+  else if ($('.content').last().position().top >= positionBottom) {
+    inner.prepend($('.content').last());
+    outer.prop('scrollTop', offsetBottom);
+  }
+});
+
+
+
+
+up.on('click', function() {
+  outer.animate({scrollTop: 50}, 100, function() {
+    inner.append($('.content').first());
+    outer.scrollTop(1);
+  });
+});
+
+
+down.on('click', function() {
+  if ($('.content').first().position().top < -1) {
+    outer.animate({scrollTop: 1}, 100);
+  }
+  else {
+    inner.prepend($('.content').last());
+    outer.scrollTop(49);
+    outer.animate({scrollTop: 1}, 100);
+  }
+});
+
+
+
+$('.content').on('click', function() {
+  var clicked = $(this);
+  var previousTiles = clicked.prevAll('.content');
+  var tilesToAppend = previousTiles.length - 2;
+  console.log(previousTiles);
+  console.log(tilesToAppend);
+
+  for (var i = 0; i < tilesToAppend; i++) {
+    outer.animate({scrollTop: 49}, 50, function() {
+      inner.append($('.content').first());
+      outer.scrollTop(1);
+    });
+  }
+});
+
+
+
+
+function changeSelected() {
+  if ($('.selected').position().top < 100) {
+    var next = $('.selected').next();
+    $('.selected').removeClass('selected');
+    next.addClass('selected');
+  }
+
+  if ($('.selected').position().top > 100) {
+    var prev = $('.selected').prev();
+    $('.selected').removeClass('selected');
+    prev.addClass('selected');
+  }
+}
+  });
+</script>
+</html>
