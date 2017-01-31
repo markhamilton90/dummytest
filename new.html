@@ -109,7 +109,7 @@ outer.on('scroll', function() {
   }
   else if ($('.content').last().position().top >= positionBottom) {
     inner.prepend($('.content').last());
-    outer.prop('scrollTop', offsetBottom);
+    outer.prop('scrollTop', offsetBottom - 1);
   }
 });
 
