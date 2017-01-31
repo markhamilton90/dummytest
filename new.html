@@ -105,7 +105,7 @@ outer.on('scroll', function() {
 
   if ($('.content').first().position().top <= -50) {
     inner.append($('.content').first());
-    outer.prop('scrollTop', 0);
+    outer.prop('scrollTop', 1);
   }
   else if ($('.content').last().position().top >= positionBottom) {
     inner.prepend($('.content').last());
